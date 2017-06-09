@@ -209,36 +209,8 @@ public class MainActivity extends Activity implements Logger.Observer {
 		msg.setData(bundle);
 		handler.sendMessage(msg);
     }
-    
-    @Override
-    protected void onResume() {
-    	super.onResume();
-    }
-    
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		super.onCreateOptionsMenu(menu);
-
-		MenuItem item = menu.add(Menu.NONE, OPTION_MENU_ABOUT, Menu.NONE, R.string.options_about);
-		item.setIcon(android.R.drawable.ic_menu_info_details);
-
-		return true;
-	}
 	
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		Intent i;
 
-		switch (item.getItemId()) {
-		case OPTION_MENU_ABOUT:
-			i = new Intent(this, AboutActivity.class);
-			startActivity(i);
-			break;
-		}
-		
-		return true;
-	}
-    
     private int getHostPort(String host) {
     	if (host.equals("stun.sipgate.net")) {
     		return 10000;
