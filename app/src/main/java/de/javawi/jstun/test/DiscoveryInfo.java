@@ -25,8 +25,9 @@ public class DiscoveryInfo {
 	private boolean portRestrictedCone = false;
 	private boolean symmetric = false;
 	private boolean symmetricUDPFirewall = false;
-	private InetAddress publicIP;
-	
+	private InetAddress publicIPV4;
+	private String publicIPV6;
+
 	public DiscoveryInfo(InetAddress testIP) {
 		this.testIP = testIP;
 	}
@@ -104,8 +105,8 @@ public class DiscoveryInfo {
 		this.symmetricUDPFirewall = true;
 	}
 	
-	public InetAddress getPublicIP() {
-		return publicIP;
+	public InetAddress getPublicIPV4() {
+		return publicIPV4;
 	}
 	
 	public InetAddress getLocalIP() {
@@ -116,8 +117,8 @@ public class DiscoveryInfo {
 		testIP = localIP;
 	}
 	
-	public void setPublicIP(InetAddress publicIP) {
-		this.publicIP = publicIP;
+	public void setPublicIPV4(InetAddress publicIP) {
+		this.publicIPV4 = publicIP;
 	}
 	
 	public String toString() {
@@ -146,12 +147,20 @@ public class DiscoveryInfo {
 		if (symmetricUDPFirewall) sb.append ("Symmetric UDP Firewall handles connections.\n");
 		if (!openAccess && !blockedUDP && !fullCone && !restrictedCone && !portRestrictedCone && !symmetric && !symmetricUDPFirewall) sb.append("unkown\n");
 		sb.append("Public IP address: ");
-		if (publicIP != null) {
-			sb.append(publicIP.getHostAddress());
+		if (publicIPV4 != null) {
+			sb.append(publicIPV4.getHostAddress());
 		} else {
 			sb.append("unknown");
 		}
 		sb.append("\n");
 		return sb.toString();
-	}	
+	}
+
+	public void setPublicIPV6(String publicIPV6) {
+		this.publicIPV6 = publicIPV6;
+	}
+
+    public String getPublicIPV6() {
+        return publicIPV6;
+    }
 }

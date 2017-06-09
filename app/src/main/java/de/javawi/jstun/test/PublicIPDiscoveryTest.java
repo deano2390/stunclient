@@ -101,26 +101,52 @@ public class PublicIPDiscoveryTest {
 
                 ma = (MappedAddress) receiveMH.getMessageAttribute(MessageAttribute.MessageAttributeType.MappedAddress);
                 ca = (ChangedAddress) receiveMH.getMessageAttribute(MessageAttribute.MessageAttributeType.ChangedAddress);
+
                 ErrorCode ec = (ErrorCode) receiveMH.getMessageAttribute(MessageAttribute.MessageAttributeType.ErrorCode);
+
                 if (ec != null) {
                     di.setError(ec.getResponseCode(), ec.getReason());
                     LOGGER.debug("Message header contains an Errorcode message attribute.");
                     return false;
                 }
-                if ((ma == null) || (ca == null)) {
+
+                if (ma == null) {
                     di.setError(700, "The server is sending an incomplete response (Mapped Address and Changed Address message attributes are missing). The client should not retry.");
                     LOGGER.debug("Response does not contain a Mapped Address or Changed Address message attribute.");
                     return false;
-                } else {
-                    di.setPublicIP(ma.getAddress().getInetAddress());
-                    if ((ma.getPort() == socketTest1.getLocalPort()) && (ma.getAddress().getInetAddress().equals(socketTest1.getLocalAddress()))) {
-                        LOGGER.debug("Node is not natted.");
-                        nodeNatted = false;
-                    } else {
-                        LOGGER.debug("Node is natted.");
-                    }
-                    return true;
                 }
+
+                if (ma.isIPV4()) {
+
+                    if (ca == null) {
+                        di.setError(700, "The server is sending an incomplete response (Mapped Address and Changed Address message attributes are missing). The client should not retry.");
+                        LOGGER.debug("Response does not contain a Mapped Address or Changed Address message attribute.");
+                        return false;
+                    } else {
+                        di.setPublicIPV4(ma.getIPV4Address().getInetAddress());
+
+                        if ((ma.getPort() == socketTest1.getLocalPort()) && (ma.getIPV4Address().getInetAddress().equals(socketTest1.getLocalAddress()))) {
+                            LOGGER.debug("Node is not natted.");
+                            nodeNatted = false;
+                        } else {
+                            LOGGER.debug("Node is natted.");
+                        }
+                    }
+
+                } else {
+
+                    di.setPublicIPV6(ma.getIPV6Address());
+
+                    /**
+                     * By definition IPv6 doesn't require NAT?
+                     */
+
+                    nodeNatted = false;
+                }
+
+
+                return true;
+
             } catch (SocketTimeoutException ste) {
                 if (timeSinceFirstTransmission < 7900) {
                     LOGGER.debug("Test 1: Socket timeout while receiving the response.");

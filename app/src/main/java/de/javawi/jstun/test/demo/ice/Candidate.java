@@ -15,7 +15,7 @@ import java.net.DatagramSocket;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 
-import de.javawi.jstun.util.Address;
+import de.javawi.jstun.util.IPV4Address;
 import de.javawi.jstun.util.UtilityException;
 
 public class Candidate implements Comparable {
@@ -31,8 +31,8 @@ public class Candidate implements Comparable {
 	private Candidate base;
 	private boolean isInUse;
 	
-	public Candidate(Address address, short componentId) throws SocketException, UnknownHostException, UtilityException {
-		this.socket = new DatagramSocket(0, address.getInetAddress());
+	public Candidate(IPV4Address IPV4Address, short componentId) throws SocketException, UnknownHostException, UtilityException {
+		this.socket = new DatagramSocket(0, IPV4Address.getInetAddress());
 		this.type = CandidateType.Local;
 		this.componentId = componentId;
 		this.priority = 0;
@@ -40,8 +40,8 @@ public class Candidate implements Comparable {
 		this.isInUse = false;
 	}
 	
-	public Candidate(Address address, CandidateType type, short componentId, Candidate base) throws SocketException, UnknownHostException, UtilityException {
-		this.socket = new DatagramSocket(0, address.getInetAddress());
+	public Candidate(IPV4Address IPV4Address, CandidateType type, short componentId, Candidate base) throws SocketException, UnknownHostException, UtilityException {
+		this.socket = new DatagramSocket(0, IPV4Address.getInetAddress());
 		this.type = type;
 		setComponentId(componentId);
 		this.priority = 0;
@@ -86,8 +86,8 @@ public class Candidate implements Comparable {
 		return priority;
 	}
 	
-	public Address getAddress() throws UtilityException {
-		return new Address(socket.getLocalAddress().getAddress());
+	public IPV4Address getAddress() throws UtilityException {
+		return new IPV4Address(socket.getLocalAddress().getAddress());
 	}
 
 	public int getPort() {

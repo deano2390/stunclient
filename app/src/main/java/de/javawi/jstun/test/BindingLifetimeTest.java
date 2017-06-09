@@ -142,7 +142,7 @@ public class BindingLifetimeTest {
 				sendMH.generateTransactionID();
 				ChangeRequest changeRequest = new ChangeRequest();
 				ResponseAddress responseAddress = new ResponseAddress();
-				responseAddress.setAddress(ma.getAddress());
+				responseAddress.setIPV4Address(ma.getIPV4Address());
 				responseAddress.setPort(ma.getPort());
 				sendMH.addMessageAttribute(changeRequest);
 				sendMH.addMessageAttribute(responseAddress);

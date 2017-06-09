@@ -39,7 +39,7 @@ import de.javawi.jstun.attribute.MessageAttributeInterface.MessageAttributeType;
 import de.javawi.jstun.header.MessageHeader;
 import de.javawi.jstun.header.MessageHeaderParsingException;
 import de.javawi.jstun.header.MessageHeaderInterface.MessageHeaderType;
-import de.javawi.jstun.util.Address;
+import de.javawi.jstun.util.IPV4Address;
 import de.javawi.jstun.util.UtilityException;
 
 /*
@@ -114,26 +114,26 @@ public class StunServer {
 						
 							// Mapped address attribute
 							MappedAddress ma = new MappedAddress();
-							ma.setAddress(new Address(receive.getAddress().getAddress()));
+							ma.setIPV4Address(new IPV4Address(receive.getAddress().getAddress()));
 							ma.setPort(receive.getPort());
 							sendMH.addMessageAttribute(ma);
 							// Changed address attribute
 							ChangedAddress ca = new ChangedAddress();
-							ca.setAddress(new Address(changedPortIP.getLocalAddress().getAddress()));
+							ca.setIPV4Address(new IPV4Address(changedPortIP.getLocalAddress().getAddress()));
 							ca.setPort(changedPortIP.getLocalPort());
 							sendMH.addMessageAttribute(ca);
 							if (cr.isChangePort() && (!cr.isChangeIP())) {
 								LOGGER.debug("Change port received in Change Request attribute");
 								// Source address attribute
 								SourceAddress sa = new SourceAddress();
-								sa.setAddress(new Address(changedPort.getLocalAddress().getAddress()));
+								sa.setIPV4Address(new IPV4Address(changedPort.getLocalAddress().getAddress()));
 								sa.setPort(changedPort.getLocalPort());
 								sendMH.addMessageAttribute(sa);
 								byte[] data = sendMH.getBytes();
 								DatagramPacket send = new DatagramPacket(data, data.length);
 								if (ra != null) {
 									send.setPort(ra.getPort());
-									send.setAddress(ra.getAddress().getInetAddress());
+									send.setAddress(ra.getIPV4Address().getInetAddress());
 								} else {
 									send.setPort(receive.getPort());
 									send.setAddress(receive.getAddress());
@@ -144,14 +144,14 @@ public class StunServer {
 								LOGGER.debug("Change ip received in Change Request attribute");
 								// Source address attribute
 								SourceAddress sa = new SourceAddress();
-								sa.setAddress(new Address(changedIP.getLocalAddress().getAddress()));
+								sa.setIPV4Address(new IPV4Address(changedIP.getLocalAddress().getAddress()));
 								sa.setPort(changedIP.getLocalPort());
 								sendMH.addMessageAttribute(sa);
 								byte[] data = sendMH.getBytes();
 								DatagramPacket send = new DatagramPacket(data, data.length);
 								if (ra != null) {
 									send.setPort(ra.getPort());
-									send.setAddress(ra.getAddress().getInetAddress());
+									send.setAddress(ra.getIPV4Address().getInetAddress());
 								} else {
 									send.setPort(receive.getPort());
 									send.setAddress(receive.getAddress());
@@ -162,14 +162,14 @@ public class StunServer {
 								LOGGER.debug("Nothing received in Change Request attribute");
 								// Source address attribute
 								SourceAddress sa = new SourceAddress();
-								sa.setAddress(new Address(receiverSocket.getLocalAddress().getAddress()));
+								sa.setIPV4Address(new IPV4Address(receiverSocket.getLocalAddress().getAddress()));
 								sa.setPort(receiverSocket.getLocalPort());
 								sendMH.addMessageAttribute(sa);
 								byte[] data = sendMH.getBytes();
 								DatagramPacket send = new DatagramPacket(data, data.length);
 								if (ra != null) {
 									send.setPort(ra.getPort());
-									send.setAddress(ra.getAddress().getInetAddress());
+									send.setAddress(ra.getIPV4Address().getInetAddress());
 								} else {
 									send.setPort(receive.getPort());
 									send.setAddress(receive.getAddress());
@@ -180,14 +180,14 @@ public class StunServer {
 								LOGGER.debug("Change port and ip received in Change Request attribute");
 								// Source address attribute
 								SourceAddress sa = new SourceAddress();
-								sa.setAddress(new Address(changedPortIP.getLocalAddress().getAddress()));
+								sa.setIPV4Address(new IPV4Address(changedPortIP.getLocalAddress().getAddress()));
 								sa.setPort(changedPortIP.getLocalPort());
 								sendMH.addMessageAttribute(sa);
 								byte[] data = sendMH.getBytes();
 								DatagramPacket send = new DatagramPacket(data, data.length);
 								if (ra != null) {
 									send.setPort(ra.getPort());
-									send.setAddress(ra.getAddress().getInetAddress());
+									send.setAddress(ra.getIPV4Address().getInetAddress());
 								} else {
 									send.setPort(receive.getPort());
 									send.setAddress(receive.getAddress());

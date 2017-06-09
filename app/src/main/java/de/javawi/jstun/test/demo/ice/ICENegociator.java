@@ -31,7 +31,7 @@ import de.javawi.jstun.header.MessageHeaderParsingException;
 import de.javawi.jstun.test.DiscoveryInfo;
 import de.javawi.jstun.test.DiscoveryTest;
 import de.javawi.jstun.test.demo.ice.Candidate.CandidateType;
-import de.javawi.jstun.util.Address;
+import de.javawi.jstun.util.IPV4Address;
 import de.javawi.jstun.util.UtilityException;
 
 public class ICENegociator {
@@ -80,13 +80,13 @@ public class ICENegociator {
 					if (!iaddress.isLoopbackAddress() && !iaddress.isLinkLocalAddress()) {
 						try {
 							// add host candidate
-							Candidate local = new Candidate(new Address(iaddress.getAddress()), componentId);
+							Candidate local = new Candidate(new IPV4Address(iaddress.getAddress()), componentId);
 							candidates.add(local);
 							// add server reflexive address
 							DiscoveryTest test = new DiscoveryTest(iaddress, stunServer, stunPort);
 							DiscoveryInfo di = test.test();
-							if (di.getPublicIP() != null) {
-								Candidate cand = new Candidate(new Address(di.getPublicIP().getAddress()), CandidateType.ServerReflexive, componentId, local);
+							if (di.getPublicIPV4() != null) {
+								Candidate cand = new Candidate(new IPV4Address(di.getPublicIPV4().getAddress()), CandidateType.ServerReflexive, componentId, local);
 								cand.setComponentId(componentId);
 								candidates.add(cand);
 							}

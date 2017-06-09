@@ -61,11 +61,11 @@ public class DiscoveryTest {
 		di = new DiscoveryInfo(iaddress);
 		
 		if (test1()) {
-			if (test2()) {
+			/*if (test2()) {
 				if (test1Redo()) {
 					test3();
 				}
-			}
+			}*/
 		}
 		
 		socketTest1.close();
@@ -87,6 +87,7 @@ public class DiscoveryTest {
 				if (socketTest1.getLocalSocketAddress() instanceof InetSocketAddress) {
 					di.setLocalIP(((InetSocketAddress) socketTest1.getLocalSocketAddress()).getAddress());
 				}
+
 				System.out.println("!!!!! SocketAddress: " + socketTest1.getLocalSocketAddress());
 				
 				MessageHeader sendMH = new MessageHeader(MessageHeader.MessageHeaderType.BindingRequest);
@@ -121,8 +122,8 @@ public class DiscoveryTest {
 					LOGGER.debug("Response does not contain a Mapped Address or Changed Address message attribute.");
 					return false;
 				} else {
-					di.setPublicIP(ma.getAddress().getInetAddress());
-					if ((ma.getPort() == socketTest1.getLocalPort()) && (ma.getAddress().getInetAddress().equals(socketTest1.getLocalAddress()))) {
+					di.setPublicIPV4(ma.getIPV4Address().getInetAddress());
+					if ((ma.getPort() == socketTest1.getLocalPort()) && (ma.getIPV4Address().getInetAddress().equals(socketTest1.getLocalAddress()))) {
 						LOGGER.debug("Node is not natted.");
 						nodeNatted = false;
 					} else {
@@ -177,7 +178,7 @@ public class DiscoveryTest {
 				sendSocket.close();
 				
 				DatagramSocket receiveSocket = new DatagramSocket(localPort, localAddress);
-				receiveSocket.connect(ca.getAddress().getInetAddress(), ca.getPort());
+				receiveSocket.connect(ca.getIPV4Address().getInetAddress(), ca.getPort());
 				receiveSocket.setSoTimeout(timeout);
 				
 				MessageHeader receiveMH = new MessageHeader();
@@ -231,7 +232,7 @@ public class DiscoveryTest {
 			// redo test 1 with address and port as offered in the changed-address message attribute
 			try {
 				// Test 1 with changed port and address values
-				socketTest1.connect(ca.getAddress().getInetAddress(), ca.getPort());
+				socketTest1.connect(ca.getIPV4Address().getInetAddress(), ca.getPort());
 				socketTest1.setSoTimeout(timeout);
 				
 				MessageHeader sendMH = new MessageHeader(MessageHeader.MessageHeaderType.BindingRequest);
@@ -264,7 +265,7 @@ public class DiscoveryTest {
 					LOGGER.debug("Response does not contain a Mapped Address message attribute.");
 					return false;
 				} else {
-					if ((ma.getPort() != ma2.getPort()) || (!(ma.getAddress().getInetAddress().equals(ma2.getAddress().getInetAddress())))) {
+					if ((ma.getPort() != ma2.getPort()) || (!(ma.getIPV4Address().getInetAddress().equals(ma2.getIPV4Address().getInetAddress())))) {
 						di.setSymmetric();
 						LOGGER.debug("Node is behind a symmetric NAT.");
 						return false;

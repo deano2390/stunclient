@@ -14,13 +14,13 @@ package de.javawi.jstun.util;
 import java.util.*;
 import java.net.*;
 
-public class Address {
+public class IPV4Address {
 	int firstOctet;
 	int secondOctet;
 	int thirdOctet;
 	int fourthOctet;
 	
-	public Address(int firstOctet, int secondOctet, int thirdOctet, int fourthOctet) throws UtilityException {
+	public IPV4Address(int firstOctet, int secondOctet, int thirdOctet, int fourthOctet) throws UtilityException {
 		if ((firstOctet < 0) || (firstOctet > 255) || (secondOctet < 0) || (secondOctet > 255) || (thirdOctet < 0) || (thirdOctet > 255) || (fourthOctet < 0) || (fourthOctet > 255)) {
 			throw new UtilityException("Address is malformed.");
 		}
@@ -30,7 +30,7 @@ public class Address {
 		this.fourthOctet = fourthOctet;
 	}
 	
-	public Address(String address) throws UtilityException {
+	public IPV4Address(String address) throws UtilityException {
 		StringTokenizer st = new StringTokenizer(address, ".");
 		if (st.countTokens() != 4) {
 			throw new UtilityException("4 octets in address string are required.");
@@ -50,7 +50,7 @@ public class Address {
 		}
 	}
 	
-	public Address(byte[] address) throws UtilityException {
+	public IPV4Address(byte[] address) throws UtilityException {
 		if (address.length < 4) {
 			throw new UtilityException("4 bytes are required.");
 		}
@@ -86,7 +86,7 @@ public class Address {
 		if (obj == null) return false;
 		try {
 			byte[] data1 = this.getBytes();
-			byte[] data2 = ((Address) obj).getBytes();
+			byte[] data2 = ((IPV4Address) obj).getBytes();
 			if ((data1[0] == data2[0]) && (data1[1] == data2[1]) &&
 			    (data1[2] == data2[2]) && (data1[3] == data2[3])) return true;
 			return false;
