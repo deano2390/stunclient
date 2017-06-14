@@ -1,5 +1,6 @@
 # stunclient
 STUN client for Android
+Forked from https://github.com/mangefoo/stunclient itself based on https://github.com/tking/JSTUN
 
 # Gradle
 
